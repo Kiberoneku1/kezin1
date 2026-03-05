@@ -345,7 +345,7 @@
     <!-- интерактивный букет (каждый цветочек можно гладить) -->
     <div class="flower-bouquet">
       <!-- цветок 1 -->
-      <div class="flower" onclick="console.log('тюльпанчик улыбнулся')" title="Нажми на меня!">
+      <div class="flower" onclick="console.log('тюльпан улыбнулся')" title="Нажми на меня!">
         <span class="flower-head">🌷</span>
         <div class="stem"></div>
         <div class="pot"></div>
@@ -357,19 +357,19 @@
         <div class="pot"></div>
       </div>
       <!-- цветок 3 -->
-      <div class="flower" onclick="console.log('тюльпанчик улыбнулся')" title="Нажми на меня!">
+      <div class="flower" onclick="console.log('тюльпанчёк улыбнулся')" title="Нажми на меня!">
         <span class="flower-head">🌷</span>
         <div class="stem"></div>
         <div class="pot"></div>
       </div>
       <!-- цветок 4 (немного другой оттенок через эмодзи) -->
-      <div class="flower" onclick="console.log('розовый тюльпан')" title="И я тоже!">
+      <div class="flower" onclick="console.log('розовенький тюльпан')" title="И я тоже!">
         <span class="flower-head">🌷</span>
         <div class="stem"></div>
         <div class="pot"></div>
       </div>
       <!-- дополнительный цветочек -->
-      <div class="flower" onclick="console.log('ещё один!')" title="тюльпан">
+      <div class="flower" onclick="console.log('а вот еще!')" title="тюльпан">
         <span class="flower-head">🌷</span>
         <div class="stem"></div>
         <div class="pot"></div>
@@ -380,7 +380,7 @@
     <div class="message" id="wishMessage">
       <p>
         🌸 Пусть весна подарит нежность,<br>
-        солнце — свет, а сердце — радость!<br>
+        а солнце — свет!<br>
         💐 С международным женским днём!
       </p>
       <div class="signature">— с любовью, Ваш весенний букет</div>
@@ -388,8 +388,8 @@
 
     <!-- интерактивные кнопки + скрытый сюрприз -->
     <div class="btn-group">
-      <button class="btn" id="surpriseBtn">🎁 Сюрприз</button>
-      <button class="btn" id="confettiBtn">✨ Волшебство</button>
+      <button class="btn" id="surpriseBtn">🎁 Тайна</button>
+      <button class="btn" id="confettiBtn">✨ Магия</button>
     </div>
 
     <!-- блок, который появляется при клике (сюрприз) -->
@@ -399,13 +399,13 @@
         <span>🌼</span>
         <span>🦋</span>
         <span>💖</span>
-        <span style="font-size: 1.7rem;">Вы прекрасны!</span>
+        <span style="font-size: 1.7rem;">Вы прекрасны! Спору нет!</span>
         <span>🌷</span>
       </div>
     </div>
 
     <div class="footer-hint">
-      ⋆｡°✩ нажимай на цветы, кнопки и лови весну ✩°｡⋆
+      ⋆｡°✩ нажимайте на цветы, кнопки и ловите следы весны ✩°｡⋆
     </div>
   </main>
 
@@ -426,9 +426,9 @@
         surpriseBlock.classList.toggle('show');
         // поменяем текст кнопки (необязательно, но весело)
         if (surpriseBlock.classList.contains('show')) {
-          surpriseBtn.innerHTML = '🎉 Спрятать';
+          surpriseBtn.innerHTML = '🎉 Скрыть';
         } else {
-          surpriseBtn.innerHTML = '🎁 Сюрприз';
+          surpriseBtn.innerHTML = '🎁 Подарочек';
         }
       });
 
@@ -530,15 +530,16 @@
       messageBox.addEventListener('dblclick', function() {
         const paragraph = messageBox.querySelector('p');
         const originalHTML = paragraph.innerHTML;
-        paragraph.innerHTML = '🌞 Будь счастлива, <br>🌷 улыбайся и цвети! 🌼';
+        paragraph.innerHTML = '🌞 Будьте счастливы, <br>🌷 улыбайтесь и цветите! 🌼';
         setTimeout(() => {
           paragraph.innerHTML = originalHTML;
         }, 2000);
       });
 
       // случайный весенний факт в консоль (просто для интерактивности)
-      console.log('🌱 С 8 марта! Пусть всё расцветает!');
+      console.log('С 8 марта! Пусть всё расцветает!');
     })();
   </script>
 </body>
+
 </html>
