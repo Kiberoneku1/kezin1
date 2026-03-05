@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌷 С 8 марта!</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #fbc2c0 0%, #fda8b4 40%, #ffe0b5 100%);
+      font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+      padding: 16px;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* интерактивная открытка — основной контейнер */
+    .card {
+      max-width: 720px;
+      width: 100%;
+      background: rgba(255, 250, 240, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 56px 24px 56px 24px;
+      box-shadow: 0 30px 50px rgba(190, 60, 90, 0.25),
+                  0 10px 25px rgba(140, 40, 60, 0.2),
+                  inset 0 2px 8px rgba(255, 255, 255, 0.7);
+      padding: 36px 24px 42px 24px;
+      border: 2px solid rgba(255, 245, 235, 0.8);
+      transition: transform 0.3s ease;
+      position: relative;
+      z-index: 10;
+    }
+
+    .card:hover {
+      transform: scale(1.01) translateY(-4px);
+      box-shadow: 0 35px 55px rgba(180, 70, 100, 0.3);
+    }
+
+    /* весенние летающие элементы (цветы, бабочки) — абсолютный слой */
+    .floating-elements {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;  /* чтобы не мешать нажатию на открытку */
+      z-index: 5;
+      overflow: hidden;
+    }
+
+    .float-item {
+      position: absolute;
+      opacity: 0.7;
+      user-select: none;
+      font-size: 2.2rem;
+      filter: drop-shadow(0 8px 12px rgba(255, 100, 150, 0.3));
+      animation: floatAround 18s infinite alternate ease-in-out;
+      transform-origin: center;
+    }
+
+    /* разные вариации анимации */
+    .float-item:nth-child(1) { top: 12%; left: 5%; animation-duration: 21s; animation-delay: -2s; font-size: 2.8rem; }
+    .float-item:nth-child(2) { top: 70%; left: 88%; animation-duration: 19s; animation-delay: -5s; font-size: 3rem; }
+    .float-item:nth-child(3) { top: 30%; left: 78%; animation-duration: 24s; animation-delay: -1s; font-size: 2.5rem; }
+    .float-item:nth-child(4) { top: 82%; left: 12%; animation-duration: 22s; animation-delay: -9s; font-size: 2.2rem; }
+    .float-item:nth-child(5) { top: 45%; left: 25%; animation-duration: 27s; animation-delay: -3s; font-size: 3.3rem; }
+    .float-item:nth-child(6) { top: 15%; left: 68%; animation-duration: 20s; animation-delay: -7s; font-size: 2.6rem; }
+    .float-item:nth-child(7) { top: 92%; left: 45%; animation-duration: 25s; animation-delay: -11s; font-size: 2rem; }
+    .float-item:nth-child(8) { top: 62%; left: 55%; animation-duration: 18s; animation-delay: -4s; font-size: 3.5rem; }
+    .float-item:nth-child(9) { top: 22%; left: 40%; animation-duration: 30s; animation-delay: -6s; font-size: 2.4rem; }
+
+    @keyframes floatAround {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+      25% { transform: translate(25px, -15px) rotate(8deg) scale(1.05); }
+      50% { transform: translate(-15px, 25px) rotate(-5deg) scale(0.95); }
+      75% { transform: translate(20px, 20px) rotate(12deg) scale(1.02); }
+      100% { transform: translate(-20px, -20px) rotate(-8deg) scale(1); }
+    }
+
+    /* заголовок */
+    .title {
+      font-size: 2.9rem;
+      font-weight: 700;
+      text-align: center;
+      color: #892b4b;
+      text-shadow: 2px 2px 0 #ffcfcf, 4px 4px 0 rgba(255, 220, 200, 0.6);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+
+    .title span {
+      display: inline-block;
+      transform: rotate(-2deg);
+      background: linear-gradient(45deg, #ec5a7a, #fb8b9d);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: none;
+      font-family: 'Brush Script MT', cursive, sans-serif;
+      font-size: 3.2rem;
+      padding: 0 6px;
+    }
+
+    /* букет из тюльпанов (интерактивный) */
+    .flower-bouquet {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 12px 20px;
+      margin: 40px 0 28px;
+      perspective: 500px;
+    }
+
+    .flower {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 8px 10px rgba(160, 60, 80, 0.2));
+    }
+
+    .flower:hover {
+      transform: translateY(-14px) scale(1.1) rotate(2deg);
+      filter: drop-shadow(0 15px 15px rgba(210, 70, 110, 0.4));
+    }
+
+    /* стебель и листья через псевдоэлементы */
+    .flower-head {
+      font-size: 4.2rem;
+      line-height: 1;
+      transition: transform 0.2s;
+      display: inline-block;
+      margin-bottom: -6px;
+    }
+
+    .stem {
+      width: 6px;
+      height: 50px;
+      background: linear-gradient(145deg, #4f8a4f, #2c6e2c);
+      border-radius: 20px 20px 4px 4px;
+      box-shadow: 0 4px 0 #1f541f;
+      margin: 4px 0 2px;
+      position: relative;
+    }
+
+    .stem::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 14px;
+      background: #4e9e4e;
+      left: -14px;
+      top: 18px;
+      border-radius: 50% 10% 70% 20%;
+      transform: rotate(-20deg);
+      box-shadow: -2px 4px 0 #367a36;
+    }
+
+    .stem::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 14px;
+      background: #4e9e4e;
+      right: -14px;
+      top: 28px;
+      border-radius: 10% 50% 20% 70%;
+      transform: rotate(20deg);
+      box-shadow: 2px 4px 0 #367a36;
+    }
+
+    .pot {
+      width: 56px;
+      height: 24px;
+      background: #c99b7b;
+      border-radius: 0 0 30% 30% / 0 0 40% 40%;
+      box-shadow: 0 6px 0 #9f7a5f, inset 0 2px 8px #eedac8;
+      margin-top: -4px;
+    }
+
+    .message {
+      background: rgba(255, 235, 225, 0.8);
+      border-radius: 60px 20px 60px 20px;
+      padding: 28px 22px;
+      margin: 20px 0 32px;
+      box-shadow: inset 0 0 0 2px white, 0 10px 20px rgba(150, 70, 80, 0.15);
+      border: 1px solid #fec8bf;
+      transition: background 0.4s;
+    }
+
+    .message p {
+      font-size: 1.5rem;
+      color: #511d33;
+      text-align: center;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    .signature {
+      font-size: 1.8rem;
+      font-style: italic;
+      font-family: 'Georgia', serif;
+      text-align: right;
+      margin-top: 20px;
+      color: #ad3f66;
+      border-top: 2px dashed #fbaabc;
+      padding-top: 16px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 24px 0 8px;
+    }
+
+    .btn {
+      background: #ffced9;
+      border: 3px solid white;
+      padding: 12px 28px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      border-radius: 50px;
+      color: #9f3e5c;
+      cursor: pointer;
+      box-shadow: 0 7px 0 #d88ca0, 0 8px 16px rgba(0,0,0,0.1);
+      transition: all 0.1s ease-out;
+      letter-spacing: 1px;
+      backdrop-filter: blur(4px);
+    }
+
+    .btn:active {
+      transform: translateY(6px);
+      box-shadow: 0 2px 0 #b46d84, 0 5px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn:hover {
+      background: #ffe2e9;
+      color: #7f2c48;
+      border-color: #fef7d2;
+    }
+
+    .footer-hint {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #b15573;
+      background: rgba(255,255,230,0.5);
+      padding: 8px 16px;
+      border-radius: 40px;
+      width: fit-content;
+      margin: 16px auto 0;
+      border: 1px solid #ffbbc5;
+    }
+
+    /* сюрприз-блок (интерактивно показывается) */
+    .surprise-box {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.6s ease-in-out, opacity 0.5s ease, margin 0.3s;
+      background: #fee3c0;
+      border-radius: 32px;
+      margin-top: 0;
+      padding: 0 16px;
+      border: 1px solid transparent;
+    }
+
+    .surprise-box.show {
+      max-height: 200px;
+      opacity: 1;
+      margin-top: 26px;
+      padding: 18px 16px;
+      border-color: #ffb0b9;
+      background: #fff1e0;
+    }
+
+    .surprise-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .surprise-content span {
+      font-size: 3rem;
+      animation: littleWiggle 2s infinite;
+    }
+
+    @keyframes littleWiggle {
+      0%,100%{ transform: rotate(0deg); }
+      25%{ transform: rotate(8deg) scale(1.1); }
+      75%{ transform: rotate(-6deg) scale(0.95); }
+    }
+
+    /* адаптив */
+    @media (max-width: 520px) {
+      .title { font-size: 2.2rem; }
+      .title span { font-size: 2.4rem; }
+      .flower-head { font-size: 3.4rem; }
+      .message p { font-size: 1.2rem; }
+      .btn { font-size: 1.1rem; padding: 10px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- летающие цветы/бабочки (интерактивный фон) -->
+  <div class="floating-elements">
+    <div class="float-item">🌷</div>
+    <div class="float-item">🌸</div>
+    <div class="float-item">🌼</div>
+    <div class="float-item">🦋</div>
+    <div class="float-item">🌺</div>
+    <div class="float-item">🐞</div>
+    <div class="float-item">🌹</div>
+    <div class="float-item">🌿</div>
+    <div class="float-item">✨</div>
+  </div>
+
+  <!-- главная открытка -->
+  <main class="card" id="greetingCard">
+    <h1 class="title">
+      С <span>8 марта</span>
+    </h1>
+    <div style="text-align: center; font-size: 1.6rem; color:#b34366; margin-bottom: 8px;">🌷🌷🌷</div>
+
+    <!-- интерактивный букет (каждый цветочек можно гладить) -->
+    <div class="flower-bouquet">
+      <!-- цветок 1 -->
+      <div class="flower" onclick="console.log('тюльпанчик улыбнулся')" title="Нажми на меня!">
+        <span class="flower-head">🌷</span>
+        <div class="stem"></div>
+        <div class="pot"></div>
+      </div>
+      <!-- цветок 2 -->
+      <div class="flower" onclick="console.log('тюльпанчик улыбнулся')" title="Нажми на меня!">
+        <span class="flower-head">🌷</span>
+        <div class="stem"></div>
+        <div class="pot"></div>
+      </div>
+      <!-- цветок 3 -->
+      <div class="flower" onclick="console.log('тюльпанчик улыбнулся')" title="Нажми на меня!">
+        <span class="flower-head">🌷</span>
+        <div class="stem"></div>
+        <div class="pot"></div>
+      </div>
+      <!-- цветок 4 (немного другой оттенок через эмодзи) -->
+      <div class="flower" onclick="console.log('розовый тюльпан')" title="И я тоже!">
+        <span class="flower-head">🌷</span>
+        <div class="stem"></div>
+        <div class="pot"></div>
+      </div>
+      <!-- дополнительный цветочек -->
+      <div class="flower" onclick="console.log('ещё один!')" title="тюльпан">
+        <span class="flower-head">🌷</span>
+        <div class="stem"></div>
+        <div class="pot"></div>
+      </div>
+    </div>
+
+    <!-- тёплое поздравление -->
+    <div class="message" id="wishMessage">
+      <p>
+        🌸 Пусть весна подарит нежность,<br>
+        солнце — свет, а сердце — радость!<br>
+        💐 С международным женским днём!
+      </p>
+      <div class="signature">— с любовью, Ваш весенний букет</div>
+    </div>
+
+    <!-- интерактивные кнопки + скрытый сюрприз -->
+    <div class="btn-group">
+      <button class="btn" id="surpriseBtn">🎁 Сюрприз</button>
+      <button class="btn" id="confettiBtn">✨ Волшебство</button>
+    </div>
+
+    <!-- блок, который появляется при клике (сюрприз) -->
+    <div class="surprise-box" id="surpriseBlock">
+      <div class="surprise-content">
+        <span>🌸</span>
+        <span>🌼</span>
+        <span>🦋</span>
+        <span>💖</span>
+        <span style="font-size: 1.7rem;">Вы прекрасны!</span>
+        <span>🌷</span>
+      </div>
+    </div>
+
+    <div class="footer-hint">
+      ⋆｡°✩ нажимай на цветы, кнопки и лови весну ✩°｡⋆
+    </div>
+  </main>
+
+  <!-- маленький скрипт для интерактива и имитации конфетти -->
+  <script>
+    (function() {
+      // Открытка и элементы
+      const card = document.getElementById('greetingCard');
+      const surpriseBtn = document.getElementById('surpriseBtn');
+      const confettiBtn = document.getElementById('confettiBtn');
+      const surpriseBlock = document.getElementById('surpriseBlock');
+      const messageBox = document.querySelector('.message');
+      const flowers = document.querySelectorAll('.flower');
+
+      // 1. Сюрприз блок (появляется/исчезает)
+      surpriseBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        surpriseBlock.classList.toggle('show');
+        // поменяем текст кнопки (необязательно, но весело)
+        if (surpriseBlock.classList.contains('show')) {
+          surpriseBtn.innerHTML = '🎉 Спрятать';
+        } else {
+          surpriseBtn.innerHTML = '🎁 Сюрприз';
+        }
+      });
+
+      // 2. Имитация конфетти / волшебство (меняем фон сообщения)
+      confettiBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+
+        // вспышка рандомных цветов
+        const originalBg = messageBox.style.background;
+        const originalText = messageBox.style.color;
+
+        messageBox.style.transition = 'background 0.2s, box-shadow 0.2s';
+        messageBox.style.background = 'linear-gradient(145deg, #fee4a9, #ffd5e0, #d6f0d6)';
+        messageBox.style.boxShadow = '0 0 30px #fdaa9b';
+
+        // брызги эмодзи (эффект)
+        const emojis = ['🌷','🌸','🌼','🌺','🦋','🐞','💐','✨','💖'];
+        for (let i = 0; i < 10; i++) {
+          setTimeout(() => {
+            // маленькие элементы в рандомных местах карточки
+            const floating = document.createElement('span');
+            floating.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            floating.style.position = 'absolute';
+            floating.style.left = Math.random() * 80 + 10 + '%';
+            floating.style.top = Math.random() * 80 + 10 + '%';
+            floating.style.fontSize = (1.5 + Math.random() * 2) + 'rem';
+            floating.style.pointerEvents = 'none';
+            floating.style.opacity = '0.9';
+            floating.style.transform = 'rotate(' + (Math.random()*30-15) + 'deg)';
+            floating.style.transition = 'opacity 1s, transform 1.2s';
+            floating.style.zIndex = '999';
+            card.style.position = 'relative';
+            card.appendChild(floating);
+            setTimeout(() => {
+              floating.style.opacity = '0';
+              floating.style.transform = 'translateY(-30px) scale(0.5)';
+            }, 50);
+            setTimeout(() => {
+              if (card.contains(floating)) card.removeChild(floating);
+            }, 800);
+          }, i * 70);
+        }
+
+        setTimeout(() => {
+          messageBox.style.background = originalBg || 'rgba(255, 235, 225, 0.8)';
+          messageBox.style.boxShadow = 'inset 0 0 0 2px white, 0 10px 20px rgba(150, 70, 80, 0.15)';
+        }, 600);
+
+        // Вибрация (если поддерживается)
+        if (window.navigator && window.navigator.vibrate) {
+          window.navigator.vibrate([30, 20, 30]);
+        }
+      });
+
+      // 3. каждый цветочек при клике дарит микро-радость
+      flowers.forEach((flower, index) => {
+        flower.addEventListener('click', function(ev) {
+          ev.stopPropagation();
+          // небольшое изменение цвета горшка или лепестка — быстро и возвращается
+          const head = flower.querySelector('.flower-head');
+          const pot = flower.querySelector('.pot');
+          if (head) {
+            head.style.transform = 'scale(1.2) rotate(3deg)';
+            head.style.transition = 'transform 0.15s';
+          }
+          if (pot) {
+            pot.style.background = '#f7bf9f';
+            pot.style.transition = 'background 0.15s';
+          }
+          setTimeout(() => {
+            if (head) head.style.transform = '';
+            if (pot) pot.style.background = '#c99b7b';
+          }, 200);
+
+          // эмодзи-спасибка
+          const ack = document.createElement('div');
+          ack.innerText = '💐';
+          ack.style.position = 'absolute';
+          ack.style.fontSize = '2rem';
+          ack.style.left = ev.clientX - card.getBoundingClientRect().left + 'px';
+          ack.style.top = ev.clientY - card.getBoundingClientRect().top - 20 + 'px';
+          ack.style.pointerEvents = 'none';
+          ack.style.opacity = '1';
+          ack.style.transition = 'all 0.8s';
+          ack.style.zIndex = '200';
+          card.style.position = 'relative';
+          card.appendChild(ack);
+          setTimeout(() => {
+            ack.style.opacity = '0';
+            ack.style.transform = 'translateY(-35px) scale(1.5)';
+          }, 20);
+          setTimeout(() => {
+            if (card.contains(ack)) card.removeChild(ack);
+          }, 700);
+        });
+      });
+
+      // 4. дополнительная фишка: меняем фразу при двойном клике на сообщение
+      messageBox.addEventListener('dblclick', function() {
+        const paragraph = messageBox.querySelector('p');
+        const originalHTML = paragraph.innerHTML;
+        paragraph.innerHTML = '🌞 Будь счастлива, <br>🌷 улыбайся и цвети! 🌼';
+        setTimeout(() => {
+          paragraph.innerHTML = originalHTML;
+        }, 2000);
+      });
+
+      // случайный весенний факт в консоль (просто для интерактивности)
+      console.log('🌱 С 8 марта! Пусть всё расцветает!');
+    })();
+  </script>
+</body>
+</html>
